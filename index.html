@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>FRP List Audit Briefing</title>
+<style>
+  :root {
+    --ink: #15171c;
+    --paper: #f4f5f7;
+    --surface: #ffffff;
+    --line: #e2e4e9;
+    --line-soft: #eceef2;
+    --text: #1c1e24;
+    --text-2: #5b6069;
+    --red: #dc2626;
+    --red-deep: #b91c1c;
+    --red-tint: #fdeaea;
+    --green: #0a7d5c;
+    --green-tint: #e6f4ee;
+    --amber: #b45309;
+    --amber-tint: #fdf1e3;
+    --code-bg: #f1f2f5;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --ink: #0f1115;
+      --paper: #14161a;
+      --surface: #1b1e24;
+      --line: #2b2f37;
+      --line-soft: #23262d;
+      --text: #e6e8ec;
+      --text-2: #9aa0aa;
+      --red: #f05252;
+      --red-deep: #f87171;
+      --red-tint: #2e1a1a;
+      --green: #4ade80;
+      --green-tint: #14261f;
+      --amber: #fbbf24;
+      --amber-tint: #2a2114;
+      --code-bg: #23262d;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #0f1115;
+    --paper: #14161a;
+    --surface: #1b1e24;
+    --line: #2b2f37;
+    --line-soft: #23262d;
+    --text: #e6e8ec;
+    --text-2: #9aa0aa;
+    --red: #f05252;
+    --red-deep: #f87171;
+    --red-tint: #2e1a1a;
+    --green: #4ade80;
+    --green-tint: #14261f;
+    --amber: #fbbf24;
+    --amber-tint: #2a2114;
+    --code-bg: #23262d;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--text);
+    font-family: "Public Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.62;
+  }
+
+  .masthead { background: var(--ink); border-bottom: 3px solid var(--red); }
+  .masthead-inner {
+    max-width: 760px; margin: 0 auto; padding: 20px 28px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .mark {
+    width: 34px; height: 34px; background: var(--red); color: #fff;
+    display: grid; place-items: center; border-radius: 4px; flex: none;
+    font: 800 13px "Archivo", sans-serif;
+  }
+  .co { font: 800 16px "Archivo", sans-serif; color: #fff; }
+  .doc {
+    margin-left: auto; font: 700 11px "Archivo", sans-serif;
+    text-transform: uppercase; letter-spacing: 0.09em; color: rgba(255,255,255,0.55);
+  }
+
+  main { max-width: 760px; margin: 0 auto; padding: 38px 28px 90px; }
+
+  h1 {
+    font: 800 32px/1.12 "Archivo", sans-serif; letter-spacing: -0.015em;
+    margin: 0 0 10px; text-wrap: balance;
+  }
+  .standfirst { font-size: 17px; color: var(--text-2); margin: 0 0 34px; max-width: 60ch; }
+  h2 {
+    font: 700 12px "Archivo", sans-serif; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--red-deep);
+    margin: 40px 0 12px; padding-top: 16px; border-top: 1px solid var(--line);
+  }
+  p { margin: 0 0 15px; max-width: 66ch; }
+  strong { font-weight: 700; }
+
+  .try {
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--red); border-radius: 6px;
+    padding: 22px 24px; margin: 0 0 8px;
+  }
+  .try .label {
+    font: 700 11px "Archivo", sans-serif; text-transform: uppercase;
+    letter-spacing: 0.09em; color: var(--text-2); margin-bottom: 8px;
+  }
+  .try a.url {
+    font: 700 18px "Archivo", sans-serif; color: var(--red-deep);
+    text-decoration: none; border-bottom: 2px solid var(--red-tint);
+    word-break: break-all;
+  }
+  .try a.url:hover { border-bottom-color: var(--red); }
+  .creds {
+    display: flex; gap: 26px; flex-wrap: wrap; margin-top: 16px;
+    padding-top: 14px; border-top: 1px solid var(--line-soft);
+  }
+  .cred .k {
+    font: 600 10.5px "Archivo", sans-serif; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-2);
+  }
+  .cred .v {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 14px; background: var(--code-bg); padding: 3px 8px;
+    border-radius: 3px; display: inline-block; margin-top: 3px;
+  }
+
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+  ol.steps li {
+    counter-increment: step; position: relative;
+    padding: 0 0 16px 42px; margin: 0;
+  }
+  ol.steps li::before {
+    content: counter(step); position: absolute; left: 0; top: 1px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    font: 700 12px "Archivo", sans-serif;
+    display: grid; place-items: center;
+  }
+  ol.steps li p { margin: 0; }
+  ol.steps li .lede { font-weight: 700; }
+
+  .statuses { display: grid; gap: 10px; margin: 0 0 16px; }
+  .status {
+    display: grid; grid-template-columns: 148px 1fr; gap: 14px;
+    align-items: start; padding: 11px 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .pill {
+    font: 700 10.5px "Archivo", sans-serif; text-transform: uppercase;
+    letter-spacing: 0.05em; padding: 3px 10px; border-radius: 999px;
+    justify-self: start; white-space: nowrap;
+  }
+  .pill.ok { background: var(--green-tint); color: var(--green); }
+  .pill.cnv { background: var(--amber-tint); color: var(--amber); }
+  .pill.flag { background: var(--red-tint); color: var(--red-deep); }
+  .status p { margin: 0; font-size: 14.5px; }
+
+  .callout {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 6px; padding: 18px 22px; margin: 0 0 16px;
+  }
+  .callout.warn { background: var(--amber-tint); border-color: transparent; }
+  .callout.warn p { color: var(--amber); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  ul.plain { margin: 0 0 15px; padding-left: 20px; max-width: 66ch; }
+  ul.plain li { margin-bottom: 7px; }
+
+  a { color: var(--red-deep); }
+  .foot {
+    margin-top: 46px; padding-top: 16px; border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--text-2);
+  }
+  @media (max-width: 600px) {
+    .status { grid-template-columns: 1fr; gap: 6px; }
+    h1 { font-size: 26px; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="mark">RRS</div>
+    <div class="co">Rapid Response Systems</div>
+    <div class="doc">Product briefing</div>
+  </div>
+</header>
+
+<main>
+  <h1>FRP List Audit</h1>
+  <p class="standfirst">
+    A working v1 of the notification list audit, plus the product spec behind it.
+    This page is the short version: what it does, how to try it, and what still
+    needs a decision.
+  </p>
+
+  <div class="try">
+    <div class="label">Try it</div>
+    <a class="url" href="https://frp-list-audit-production.up.railway.app">frp-list-audit-production.up.railway.app</a>
+    <div class="creds">
+      <div class="cred"><div class="k">Access</div><div class="v">credentials from Jess</div></div>
+    </div>
+  </div>
+  <p style="font-size:13px; color:var(--text-2)">
+    Shared demo instance. It starts empty, and the database resets whenever it is
+    redeployed. Please do not put a real customer's notification list into it.
+  </p>
+
+  <h2>What it does</h2>
+  <p>
+    Every Facility Response Plan carries a list of who to call during a spill:
+    names, titles, phone numbers, organizations. Those lists decay quietly. People
+    change jobs and die, organizations dissolve, numbers get reassigned, and none
+    of it costs anything until the day of a spill or the day of an inspection.
+  </p>
+  <p>
+    The tool takes a facility's notification list, runs verification checks against
+    it, and produces a short branded report flagging the entries that are stale,
+    unreachable, or unverifiable. It is the entry product: cheap to deliver, it
+    shows a prospect the real state of their plan, and the findings map directly
+    onto the paid work (digitization, notification modernization, tabletop
+    exercises, drills).
+  </p>
+
+  <h2>Why the pitch holds up</h2>
+  <p>
+    In an EPA field inspection of the Greater Cincinnati Asphalt Terminal
+    (FRP0500295, North Bend OH), the inspector wrote, verbatim: <em>"Some telephone
+    numbers were incorrect. Please update the notification list."</em> The facility
+    was given 60 days to resubmit. That plan carries a 38.8 mile planning distance
+    and a 6,000,000 gallon worst case discharge.
+  </p>
+  <p>
+    Every one of those figures was checked against the inspection document itself
+    rather than taken secondhand. The same inspection raised two further findings
+    unrelated to the contact list. This is a documented case, not an anecdote.
+  </p>
+
+  <h2>How an audit runs</h2>
+  <ol class="steps">
+    <li><p><span class="lede">Describe the facility.</span> Name, state, FRP identifier, plan revision date. The state drives the registry and area code checks; the revision date drives the staleness check.</p></li>
+    <li><p><span class="lede">Paste in the roles the plan itself requires.</span> Role coverage is an internal consistency check: the plan judged against its own stated requirements, never against our reading of the regulation.</p></li>
+    <li><p><span class="lede">Upload the notification pages.</span> PDF, CSV, or spreadsheet. If someone uploads the EPA inspection report by mistake, the tool notices there is no contact list in it and says so rather than inventing entries.</p></li>
+    <li><p><span class="lede">Confirm every extracted row against the source.</span> Rows pulled from a PDF arrive unconfirmed, and checks will not run until a human has signed off on each. A misread digit produces a false finding, which is worse than no finding.</p></li>
+    <li><p><span class="lede">Run the checks and review every flag.</span> Each entry gets a status, a reason, and a suggested fix, all editable before the customer sees them.</p></li>
+    <li><p><span class="lede">Approve and deliver.</span> Approval locks the audit, signs it with the operator's login, and clears the draft watermark. The report prints to PDF from the browser.</p></li>
+  </ol>
+
+  <h2>Reading the report</h2>
+  <div class="statuses">
+    <div class="status">
+      <span class="pill ok">Verified</span>
+      <p>Every applicable check passed.</p>
+    </div>
+    <div class="status">
+      <span class="pill cnv">Could not verify</span>
+      <p>Neutral, and not an accusation. Our sources could not confirm the entry. It does not mean the entry is wrong.</p>
+    </div>
+    <div class="status">
+      <span class="pill flag">Flagged for review</span>
+      <p>A check returned a specific signal the facility should act on. Every flag carries a reason and a recommended fix.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p>
+      <strong>The rule the whole product rests on.</strong> The report flags, it never
+      declares. It never states that a person is deceased, has left a job, or that a
+      number is dead, because we cannot know those things and saying them creates real
+      exposure. This is enforced in the software rather than left to whoever writes the
+      report: every customer-facing sentence is drawn from a fixed library, and if an
+      operator types an assertion into a finding, the tool refuses to save it and asks
+      them to rephrase it as what could or could not be verified.
+    </p>
+  </div>
+
+  <div class="callout warn">
+    <p>
+      <strong>What you will notice when you try it.</strong> Nothing currently reaches
+      "verified" status. The phone, registry, mailbox, and address checks are built and
+      wired but have no vendor API keys behind them yet, so they honestly report that no
+      lookup source is configured. That is the tool refusing to overstate what it knows,
+      and it resolves the moment we buy the data sources.
+    </p>
+  </div>
+
+  <h2>Decisions already made</h2>
+  <ul class="plain">
+    <li><strong>Anonymized marketing metrics</strong> are allowed, but only from audits where the customer gave explicit written consent. Opt-in, recorded per audit, defaults to no, withdrawn by a deletion request, and nothing publishes from a sample under five audits.</li>
+    <li><strong>AI does one job:</strong> reading a plan page into structured rows. It never runs verification and never writes a word of the report, because fixed report language is what makes the liability rule enforceable at all. It is off by default and works with any provider.</li>
+    <li><strong>v1 does not</strong> do automated outreach, continuous monitoring, a public self-serve product, or any assertion about an individual.</li>
+  </ul>
+
+  <h2>One idea worth ten minutes</h2>
+  <p>
+    EPA Risk Management Plan data is public by statute and carries the same emergency
+    contact fields we audit: name, title, phone, 24-hour phone, email. Facilities are
+    required to correct that contact information within one month of any change. That
+    gives us a public, at-scale way to identify facilities with demonstrably stale
+    emergency contacts without asking anyone for a document. It is a lead list, a
+    marketing statistic, and arguably a second product with a far tighter clock than
+    the FRP five year cycle.
+  </p>
+
+  <div class="foot">
+    Rapid Response Systems. The full product requirements document covers the verification
+    pipeline, data handling, commercial model, and build estimate in depth, and is held
+    separately.
+  </div>
+</main>
+
+</body>
+</html>
