@@ -212,8 +212,35 @@
     </div>
   </div>
   <p style="font-size:13px; color:var(--text-2)">
-    Shared demo instance. It starts empty, and the database resets whenever it is
-    redeployed. Please do not put a real customer's notification list into it.
+    Shared demo instance. Please do not put a real customer's notification list into it.
+  </p>
+
+  <h2>Two minutes, start to finish</h2>
+  <p>
+    Sign in and you land on a finished audit called <strong>Demo Facility</strong>. Open
+    it to see the flagged entries, then use <strong>View report</strong> to read what a
+    customer would actually receive. That is the deliverable, and it is the fastest way
+    to judge whether this is worth building on.
+  </p>
+  <p>
+    To run one yourself, download
+    <a href="sample-notification-list.csv" download>this sample notification list</a>
+    (a synthetic seven entry list with the kinds of errors real plans carry), then choose
+    <strong>New audit</strong>, give it any facility name, set the state to
+    <strong>OH</strong>, paste these lines into the required roles box:
+  </p>
+  <pre style="background:var(--code-bg); padding:14px 16px; border-radius:5px; font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace; font-size:13px; line-height:1.5; overflow-x:auto; margin:0 0 15px">Qualified Individual
+National Response Center
+State Emergency Response Commission
+Oil Spill Response Organization
+Local Fire Department
+County LEPC</pre>
+  <p>
+    Upload the CSV, press <strong>Run verification checks</strong>, and read the findings.
+    The list is built so that several checks fire: a number that is not a valid phone
+    number, an area code that does not match the facility's state, an email domain that
+    does not resolve, an entry too incomplete to act on, and a required notification role
+    that the list is missing entirely.
   </p>
 
   <h2>What it does</h2>
